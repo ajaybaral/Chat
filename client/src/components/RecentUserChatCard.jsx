@@ -12,9 +12,11 @@ export default function RecentUserChatCard({ chat, onClick, isActive }) {
   return (
     <div
       onClick={() => onClick(chat)}
-      className={`flex gap-2 p-4 my-1 rounded-md hover:bg-backgroundLight3  dark:hover:bg-backgroundDark1 ${
-        isActive ? "bg-backgroundLight3 dark:bg-backgroundDark1 " : ""
-      } items-center w-full cursor-pointer`}
+      className={`flex gap-3 p-4 my-1 rounded-lg transition-all duration-200 ease-in-out cursor-pointer ${
+        isActive 
+          ? "bg-primary bg-opacity-10 border border-primary shadow-sm" 
+          : "hover:bg-backgroundLight3 dark:hover:bg-backgroundDark1 border border-transparent"
+      } items-center w-full`}
     >
       {chat.isGroupChat ? (
         <div className="w-12 relative h-12 mr-2 flex-shrink-0 flex justify-start items-center flex-nowrap">
@@ -38,12 +40,16 @@ export default function RecentUserChatCard({ chat, onClick, isActive }) {
           })}
         </div>
       ) : (
-        <img
-          className="size-12 rounded-full object-cover"
-          src={filteredChat.avatar}
-          alt=""
-          loading="lazy"
-        />
+        <div className="relative">
+          <img
+            className="size-12 rounded-full object-cover border-2 border-border_light dark:border-border_dark"
+            src={filteredChat.avatar}
+            alt=""
+            loading="lazy"
+          />
+          {/* Online status indicator - can be made dynamic later */}
+          <div className="absolute bottom-0 right-0 size-3 bg-accent rounded-full border-2 border-white dark:border-backgroundDark2"></div>
+        </div>
       )}
 
       <div className=" w-full">
@@ -52,7 +58,7 @@ export default function RecentUserChatCard({ chat, onClick, isActive }) {
         justify-between"
         >
           <div>
-            <p className="font-medium text-base text-slate-700 dark:text-slate-100">
+            <p className="font-semibold text-base text-text_dark_primary dark:text-slate-100">
               {filteredChat.title}
             </p>
           </div>
@@ -64,8 +70,8 @@ export default function RecentUserChatCard({ chat, onClick, isActive }) {
               : ""}{" "}
           </div>
         </div>
-        <div className=" w-full flex items-center justify-between">
-          <div className="text-sm text-slate-500 dark:text-slate-400">
+        <div className="w-full flex items-center justify-between">
+          <div className="text-sm text-muted dark:text-slate-400">
             {limitChar(filteredChat.lastMessage, 25)}
           </div>
           {/* <span className="rounded-full size-5 text-center content-center text-xs bg-secondary bg-opacity-20 shadow-md dark:text-white">

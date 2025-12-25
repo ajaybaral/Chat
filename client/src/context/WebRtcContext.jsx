@@ -8,11 +8,19 @@ const webRtcContext = createContext(null);
 
 // connect to the signalling socket server
 const connectToSigServer = (userId) => {
-  return socketio(import.meta.env.VITE_SIGNALLING_SERVER_URL, {
+  const socket = socketio(import.meta.env.VITE_SIGNALLING_SERVER_URL, {
     secure: true,
     rejectUnauthorized: false, // this will allow the use of self-signed certificates
     auth: { userId },
   });
+  
+  // Authenticate user with the signaling server
+  socket.on('connect', () => {
+    console.log('Connected to signaling server, authenticating...');
+    socket.emit('authenticate', userId);
+  });
+  
+  return socket;
 };
 
 // custom hook to access webRTC instance from context
@@ -364,6 +372,12 @@ export default function WebRtcContextProvider({ children }) {
 
   // connect to the signalling socket server
   useEffect(() => {
+    // Only connect if signaling server URL is defined
+    if (!import.meta.env.VITE_SIGNALLING_SERVER_URL) {
+      console.log('WebRTC signaling server disabled - video calls unavailable');
+      return;
+    }
+    
     const socketInstance = connectToSigServer(userId);
     setSocket(socketInstance);
     return () => {

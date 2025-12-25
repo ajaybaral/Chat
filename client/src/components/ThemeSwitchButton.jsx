@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import ThemeContext from "../context/ThemeContext";
-import { PiSunLight, IoIosMoon } from "../assets";
+import { Sun, Moon } from "lucide-react";
 
 export default function ThemeSwitchButton() {
   const { currentTheme, changeCurrentTheme } = useContext(ThemeContext);
@@ -10,8 +10,8 @@ export default function ThemeSwitchButton() {
   };
 
   return (
-    <button className="cursor-pointer" onClick={handleButtonClick}>
-      {currentTheme === "light" ? <IoIosMoon /> : <PiSunLight />}
+    <button className="cursor-pointer transition-colors hover:text-primary" onClick={handleButtonClick}>
+      {currentTheme === "light" ? <Moon size={24} /> : <Sun size={24} />}
     </button>
   );
 }

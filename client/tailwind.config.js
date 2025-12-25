@@ -5,20 +5,33 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#7868F7",
-        primary_hover: "#675ad1",
-        secondary: "#009A6E",
-        backgroundLight1: "#ffffff", // 50
-        backgroundLight2: "#f5f7fb", // 100
-        backgroundLight3: "#e6ebf5",
-
-        text_light_primary: "#F2F3F4",
-        text_light_secondary: "#F2F3F4",
-        text_dark_primary: "#111111",
-        text_dark_secondary: "#48494a ",
-        backgroundDark1: "#36404a",
-        backgroundDark2: "#303841",
-        backgroundDark3: "#262e35",
+        // Primary theme - BRIGHT Lime Green
+        primary: "#A3E635",        // Bright lime green
+        primary_hover: "#84CC16",  // Lime 500
+        accent: "#4ADE80",         // Bright green accent
+        
+        // Light mode - Keep vanilla/cream
+        backgroundLight1: "#FFFEF7",
+        backgroundLight2: "#FBF8F1",
+        backgroundLight3: "#F5F0E5",
+        
+        // Dark mode - PURE BLACK with lime
+        backgroundDark1: "#1A1A1A",   // Near black
+        backgroundDark2: "#0A0A0A",   // Almost pure black
+        backgroundDark3: "#000000",   // Pure black
+        
+        // Text colors
+        text_light_primary: "#FFFFFF",
+        text_light_secondary: "#E5E7EB",
+        text_dark_primary: "#1F2937",
+        text_dark_secondary: "#6B7280",
+        
+        // Borders
+        border_light: "#E5DCC5",
+        border_dark: "#333333",       // Dark grey border
+        
+        // Muted
+        muted: "#9CA3AF",
       },
 
       screens: {

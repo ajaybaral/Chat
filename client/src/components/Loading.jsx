@@ -4,7 +4,7 @@ const Loading = () => {
   return (
     <>
       <div className="loader"></div>
-      <style jsx>{`
+      <style>{`
         .loader {
           width: 15px;
           aspect-ratio: 1;
@@ -14,20 +14,20 @@ const Loading = () => {
 
         @keyframes l5 {
           0% {
-            box-shadow: 20px 0 #000, -20px 0 #0002;
-            background: #000;
+            box-shadow: 20px 0 #A3E635, -20px 0 #A3E63520;
+            background: #A3E635;
           }
           33% {
-            box-shadow: 20px 0 #000, -20px 0 #0002;
-            background: #0002;
+            box-shadow: 20px 0 #A3E635, -20px 0 #A3E63520;
+            background: #A3E63520;
           }
           66% {
-            box-shadow: 20px 0 #0002, -20px 0 #000;
-            background: #0002;
+            box-shadow: 20px 0 #A3E63520, -20px 0 #A3E635;
+            background: #A3E63520;
           }
           100% {
-            box-shadow: 20px 0 #0002, -20px 0 #000;
-            background: #000;
+            box-shadow: 20px 0 #A3E63520, -20px 0 #A3E635;
+            background: #A3E635;
           }
         }
       `}</style>

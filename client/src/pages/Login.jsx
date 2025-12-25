@@ -1,7 +1,9 @@
+/* eslint-disable no-unused-vars */
 import { RefObject, useRef } from "react";
-import { BiCoffee, BsFillChatRightTextFill } from "../assets";
+import { Coffee, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import AnimatedBackground from "../components/AnimatedBackground";
 
 export default function Login() {
   const userIdRef = useRef();
@@ -23,7 +25,6 @@ export default function Login() {
     },
   ];
 
-  // handle user login
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     const user = {
@@ -36,60 +37,83 @@ export default function Login() {
   };
 
   return (
-    <div className="login w-full h-screen dark:bg-backgroundDark3 flex items-center justify-center">
-      <div className="l-wrapper w-[400px] flex items-center flex-col gap-5">
-        <div className=" flex items-center gap-3">
-          <div className="text-primary">
-            <BsFillChatRightTextFill />
+    <>
+      <AnimatedBackground />
+      <div className="relative min-h-screen flex items-center justify-center px-4 py-12">
+        <div className="w-full max-w-md">
+          {/* Logo and Header */}
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center justify-center size-16 bg-gradient-to-br from-primary to-accent rounded-2xl mb-4 shadow-lg">
+              <MessageCircle size={32} className="text-white" />
+            </div>
+            <h1 className="text-4xl font-bold text-text_dark_primary dark:text-text_light_primary mb-2">
+              Welcome Back
+            </h1>
+            <p className="text-text_dark_secondary dark:text-text_light_secondary">
+              Sign in to continue to EchoChat
+            </p>
           </div>
-          <h1 className="text-2xl font-bold dark:text-slate-200">ZenChat</h1>
-        </div>
 
-        <div className="flex flex-col items-center gap-1">
-          <h3 className="font-medium text-xl dark:text-slate-200">Sign In</h3>
-          <p className="text-slate-400 dark:text-slate-300">
-            Sign in your account
-          </p>
-        </div>
+          {/* Login Form */}
+          <div className="bg-white dark:bg-backgroundDark2 rounded-3xl shadow-2xl p-8 backdrop-blur-sm bg-opacity-90 dark:bg-opacity-90 border border-border_light dark:border-border_dark">
+            <form onSubmit={handleFormSubmit} className="space-y-6">
+              {formFields.map((field, index) => (
+                <div key={index}>
+                  <label className="block text-sm font-medium text-text_dark_primary dark:text-text_light_primary mb-2">
+                    {field.type === "userId" ? "Email or Username" : "Password"}
+                  </label>
+                  <input
+                    type={field.type}
+                    placeholder={field.placeholder}
+                    ref={field.ref}
+                    required
+                    className="w-full px-4 py-3 bg-backgroundLight3 dark:bg-backgroundDark1 border border-border_light dark:border-border_dark rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-text_dark_primary dark:text-text_light_primary placeholder-text_dark_secondary dark:placeholder-text_light_secondary"
+                  />
+                </div>
+              ))}
 
-        <form
-          onSubmit={handleFormSubmit}
-          className=" dark:bg-backgroundDark2 flex max-w-fit flex-col items-center  p-5 rounded-lg bg-slate-100 container-shadow "
-        >
-          {authError && <p className="text-red-500 text-center">{authError}</p>}
-          {formFields.map((field, index) => (
-            <input
-              type={field.type}
-              required
-              placeholder={field.placeholder}
-              ref={field.ref}
-              className="dark:bg-backgroundDark1 dark:text-white w-full mb-2 p-2 rounded-lg focus:outline-none"
-            />
-          ))}
-          <div className="w-full mt-2 ">
-            <button
-              type="submit"
-              className="w-full p-2 rounded-lg hover:scale-105 transition-transform focus:outline-none text-white bg-primary"
-            >
-              Sign In
-            </button>
-          </div>
-        </form>
+              {authError && (
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 px-4 py-3 rounded-xl text-sm">
+                  {authError}
+                </div>
+              )}
 
-        <div>
-          <p className="text-center dark:text-slate-300">
-            Don't have an account!{" "}
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary_hover hover:to-primary text-white font-semibold py-3.5 rounded-xl transition-all transform hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
+              >
+                Sign In
+              </button>
+            </form>
+
+            {/* Divider */}
+            <div className="relative my-8">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-border_light dark:border-border_dark"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-4 bg-white dark:bg-backgroundDark2 text-text_dark_secondary dark:text-text_light_secondary">
+                  New to EchoChat?
+                </span>
+              </div>
+            </div>
+
+            {/* Register Link */}
             <Link
-              className="text-primary cursor-pointer hover:underline"
-              to={"/register"}
+              to="/register"
+              className="block w-full text-center py-3.5 border-2 border-primary text-primary font-semibold rounded-xl transition-all hover:bg-primary hover:text-white"
             >
-              Sign Up
+              Create Account
             </Link>
-            <br />
-            Crafted with ☕ by Ankit Kumar
-          </p>
+          </div>
+
+          {/* Footer */}
+          <div className="text-center mt-8 text-sm text-text_dark_secondary dark:text-text_light_secondary flex items-center justify-center gap-2">
+            <Coffee size={16} className="text-primary" />
+            <span>Powered by EchoChat</span>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

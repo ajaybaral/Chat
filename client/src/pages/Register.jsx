@@ -1,101 +1,162 @@
-import { RefObject, useRef } from "react";
-import { BiCoffee, BsFillChatRightTextFill } from "../assets";
-import { Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+/* eslint-disable no-unused-vars */
+import { RefObject, useRef, useState, useEffect } from "react";
+import { Coffee, MessageCircle } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import AnimatedBackground from "../components/AnimatedBackground";
+import { generateOTP, storeOTP, storePendingUser } from "../utils/otpUtils";
+import { sendOTPEmail, initEmailJS } from "../services/emailService";
 
 export default function Register() {
-  const emailRef = useRef();
   const usernameRef = useRef();
+  const emailRef = useRef();
   const passwordRef = useRef();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  // use the AuthHook for registration funciton
-  const { register, authError } = useAuth();
+  // Initialize EmailJS on component mount
+  useEffect(() => {
+    initEmailJS();
+  }, []);
 
   const formFields = [
+    {
+      type: "text",
+      placeholder: "Choose a username",
+      ref: usernameRef,
+      label: "Username",
+    },
     {
       type: "email",
       placeholder: "Enter your email",
       ref: emailRef,
-    },
-    {
-      type: "text",
-      placeholder: "Enter your username",
-      ref: usernameRef,
+      label: "Email",
     },
     {
       type: "password",
-      placeholder: "Enter your password",
+      placeholder: "Create a password",
       ref: passwordRef,
+      label: "Password",
     },
   ];
 
-  // handle the user registration
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError('');
+
     const user = {
       email: emailRef.current.value,
       username: usernameRef.current.value,
       password: passwordRef.current.value,
     };
 
-    await register(user);
+    try {
+      // Generate OTP
+      const otp = generateOTP();
+      console.log('Generated OTP:', otp); // For development - remove in production
+
+      // Send OTP email
+      await sendOTPEmail(user.email, user.username, otp);
+
+      // Store OTP and user data in session
+      storeOTP(user.email, otp);
+      storePendingUser(user);
+
+      // Navigate to OTP verification page
+      navigate('/verify-otp');
+    } catch (err) {
+      console.error('Registration error:', err);
+      setError(err.message || 'Failed to send OTP. Please check your email configuration.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="login w-full h-screen dark:bg-backgroundDark3 flex items-center justify-center">
-      <div className="l-wrapper w-[400px] flex items-center flex-col gap-5">
-        <div className="flex items-center gap-3">
-          <div className="text-primary">
-            <BsFillChatRightTextFill />
+    <>
+      <AnimatedBackground />
+      <div className="relative min-h-screen flex items-center justify-center px-4 py-12">
+        <div className="w-full max-w-md">
+          {/* Logo and Header */}
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center justify-center size-16 bg-gradient-to-br from-primary to-accent rounded-2xl mb-4 shadow-lg">
+              <MessageCircle size={32} className="text-white" />
+            </div>
+            <h1 className="text-4xl font-bold text-text_dark_primary dark:text-text_light_primary mb-2">
+              Join EchoChat
+            </h1>
+            <p className="text-text_dark_secondary dark:text-text_light_secondary">
+              Create your account and start chatting
+            </p>
           </div>
-          <h1 className="text-2xl font-bold dark:text-slate-200">ZenChat</h1>
-        </div>
 
-        <div className="flex flex-col items-center gap-1">
-          <h3 className="font-medium text-xl dark:text-slate-200">Sign Up</h3>
-          <p className="text-slate-400 dark:text-slate-300">
-            Welcome to zenchat, create an account
-          </p>
-        </div>
+          {/* Register Form */}
+          <div className="bg-white dark:bg-backgroundDark2 rounded-3xl shadow-2xl p-8 backdrop-blur-sm bg-opacity-90 dark:bg-opacity-90 border border-border_light dark:border-border_dark">
+            <form onSubmit={handleFormSubmit} className="space-y-6">
+              {formFields.map((field, index) => (
+                <div key={index}>
+                  <label className="block text-sm font-medium text-text_dark_primary dark:text-text_light_primary mb-2">
+                    {field.label}
+                  </label>
+                  <input
+                    type={field.type}
+                    placeholder={field.placeholder}
+                    ref={field.ref}
+                    required
+                    className="w-full px-4 py-3 bg-backgroundLight3 dark:bg-backgroundDark1 border border-border_light dark:border-border_dark rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-text_dark_primary dark:text-text_light_primary placeholder-text_dark_secondary dark:placeholder-text_light_secondary"
+                  />
+                </div>
+              ))}
 
-        <form
-          onSubmit={handleFormSubmit}
-          className="flex max-w-fit dark:bg-backgroundDark2 dark:text-white flex-col items-center  p-5 rounded-lg bg-slate-100 container-shadow "
-        >
-          {authError && <p className="text-red-500 text-center">{authError}</p>}
-          {formFields.map((field, index) => (
-            <input
-              type={field.type}
-              required
-              placeholder={field.placeholder}
-              ref={field.ref}
-              className="w-full dark:bg-backgroundDark1 mb-2 p-2 rounded-lg focus:outline-none"
-            />
-          ))}
-          <div className="w-full mt-2 ">
-            <button
-              type="submit"
-              className="w-full p-2 rounded-lg hover:scale-105 transition-transform focus:outline-none text-white bg-primary"
-            >
-              Sign Up
-            </button>
-          </div>
-        </form>
+              {error && (
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 px-4 py-3 rounded-xl text-sm">
+                  {error}
+                </div>
+              )}
 
-        <div>
-          <p className="text-center dark:text-slate-300">
-            Have an account already ?{" "}
+              {/* Info message about OTP */}
+              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 px-4 py-3 rounded-xl text-sm">
+                📧 We'll send a verification code to your email
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary_hover hover:to-primary text-white font-semibold py-3.5 rounded-xl transition-all transform hover:scale-[1.02] hover:shadow-lg active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              >
+                {loading ? 'Sending OTP...' : 'Create Account'}
+              </button>
+            </form>
+
+            {/* Divider */}
+            <div className="relative my-8">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-border_light dark:border-border_dark"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-4 bg-white dark:bg-backgroundDark2 text-text_dark_secondary dark:text-text_light_secondary">
+                  Already have an account?
+                </span>
+              </div>
+            </div>
+
+            {/* Login Link */}
             <Link
-              className="text-primary cursor-pointer hover:underline"
-              to={"/login"}
+              to="/login"
+              className="block w-full text-center py-3.5 border-2 border-primary text-primary font-semibold rounded-xl transition-all hover:bg-primary hover:text-white"
             >
-              Sign In
+              Sign In Instead
             </Link>
-            <br />
-            Crafted with ☕ by Ankit Kumar
-          </p>
+          </div>
+
+          {/* Footer */}
+          <div className="text-center mt-8 text-sm text-text_dark_secondary dark:text-text_light_secondary flex items-center justify-center gap-2">
+            <Coffee size={16} className="text-primary" />
+            <span>Powered by EchoChat</span>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

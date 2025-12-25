@@ -1,5 +1,7 @@
+/* eslint-disable no-unused-vars */
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import VerifyOTP from "./pages/VerifyOTP";
 import Chat from "./pages/Chat";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
@@ -43,6 +45,15 @@ function App() {
           element={
             <PublicRoute>
               <Register />
+            </PublicRoute>
+          }
+        />
+        <Route
+          exact
+          path="/verify-otp"
+          element={
+            <PublicRoute>
+              <VerifyOTP />
             </PublicRoute>
           }
         />

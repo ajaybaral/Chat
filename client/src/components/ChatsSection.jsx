@@ -38,13 +38,15 @@ const MessageCont = ({ isOwnMessage, isGroupChat, message }) => {
   return (
     <div className={`w-auto flex my-2 `}>
       <div
-        className={`flex  ${
-          isOwnMessage ? "max-w-[50%] md:max-w-[85%] ml-auto " : "mr-auto"
+        className={`flex ${
+          isOwnMessage ? "max-w-[70%] md:max-w-[85%] ml-auto" : "max-w-[70%] md:max-w-[85%] mr-auto"
         }`}
       >
         <div
-          className={`flex flex-col  justify-center relative dark:bg-opacity-20 dark:bg-primary min-w-[120px] max-w-full bg-backgroundLight3  p-2 md:p-1 rounded-xl ${
-            isOwnMessage ? "rounded-br-none" : "rounded-bl-none"
+          className={`flex flex-col justify-center relative min-w-[120px] max-w-full p-3 md:p-2 rounded-2xl shadow-sm ${
+            isOwnMessage 
+              ? "bg-primary bg-opacity-20 dark:bg-primary dark:bg-opacity-30 rounded-br-none" 
+              : "bg-backgroundLight3 dark:bg-backgroundDark1 rounded-bl-none"
           } mb-5 ${isOwnMessage ? "order-2" : "order-1"}`}
         >
           {message.attachments?.length ? (
@@ -123,14 +125,11 @@ const MessageCont = ({ isOwnMessage, isGroupChat, message }) => {
           ) : (
             ""
           )}
-          <p className="p-2 md:p-2 text-base md:text-md text-slate-900 dark:text-slate-100 ">
+          <p className="p-2 md:p-2 text-base md:text-sm text-text_dark_primary dark:text-slate-100">
             {message.content}
           </p>
 
-          <div className="flex items-center gap-1 text-xs text-slate-400 absolute bottom-0 right-1 ">
-            {/* <span>
-              <LuClock3 />
-            </span> */}
+          <div className="flex items-center gap-1 text-xs text-muted dark:text-slate-400 absolute -bottom-5 right-1">
             <span className="text-[10px]">
               {moment(message.createdAt)
                 .add("TIME_ZONE", "hours")
@@ -362,11 +361,11 @@ export default function ChatsSection() {
         </div>
       )}
       <div className="h-[90px] md:h-auto border-t shadow-xl dark:border-slate-500 light-upper-cont-shadow dark:dark-upper-cont-shadow bg-slate w-full flex items-center justify-between p-4 md:p-2 ">
-        <div className="flex-1 mr-4 md:mr-2 ">
+        <div className="flex-1 mr-4 md:mr-2">
           <input
             type="text"
-            placeholder="Enter Message..."
-            className="w-full h-full px-4 py-2 md:p-2 md:text-sm rounded-lg dark:bg-slate-600 border border-transparent bg-backgroundLight3 focus:outline-none dark:text-white text-black "
+            placeholder="Type a message..."
+            className="w-full h-full px-4 py-3 md:p-2 md:text-sm rounded-lg dark:bg-backgroundDark1 border border-border_light dark:border-border_dark bg-backgroundLight2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent dark:text-white text-text_dark_primary transition-all duration-200"
             onKeyDown={(e) => {
               if (e.key === "Enter") sendChatMessage();
             }}
@@ -378,7 +377,7 @@ export default function ChatsSection() {
         <div className="flex items-center space-x-4 md:space-x-2">
           <div>
             <label htmlFor="imageAttach" className="cursor-pointer">
-              <FiImage className="text-primary text-2xl md:text-md hover:text-primary_hover" />
+              <FiImage className="text-primary text-2xl md:text-lg hover:text-primary_hover transition-colors duration-200" />
             </label>
             <input
               type="file"
@@ -391,10 +390,9 @@ export default function ChatsSection() {
               onChange={(e) => setAttachments([...e.target.files])}
             />
           </div>
-          {/* // future version  */}
           <div>
             <label htmlFor="fileAttach" className="cursor-pointer">
-              <IoMdAttach className="text-primary text-xl hover:text-primary_hover" />
+              <IoMdAttach className="text-primary text-2xl md:text-lg hover:text-primary_hover transition-colors duration-200" />
             </label>
             <input
               type="file"
@@ -410,9 +408,9 @@ export default function ChatsSection() {
           <button
             disabled={!message && !attachments.length}
             onClick={sendChatMessage}
-            className="bg-primary hover:bg-primary_hover transition-colors px-4 py-2 md:px-3 md:py-1 rounded-lg text-white"
+            className="bg-primary hover:bg-primary_hover transition-all duration-200 ease-in-out px-5 py-3 md:px-3 md:py-2 rounded-lg text-white shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <IoMdSend className="text-xl" />
+            <IoMdSend className="text-xl md:text-lg" />
           </button>
         </div>
       </div>

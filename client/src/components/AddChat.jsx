@@ -114,7 +114,7 @@ export function AddChat({ open }) {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black/50 bg-opacity-75 transition-opacity" />
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity" />
         </Transition>
 
         <div className="fixed inset-0 z-10 overflow-y-auto">
@@ -128,14 +128,14 @@ export function AddChat({ open }) {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <DialogPanel className=" w-full relative transform overflow-hidden rounded-lg bg-white dark:bg-backgroundDark1 px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+              <DialogPanel className="w-full relative transform overflow-hidden rounded-2xl bg-white dark:bg-backgroundDark2 px-6 pb-6 pt-6 text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-8 border border-border_light dark:border-border_dark">
                 <div className="sm:flex sm:items-start">
                   <div className="w-full mt-3 text-center sm:mt-0 sm:text-left">
                     <DialogTitle
                       as="h3"
-                      className="text-lg leading-6 font-medium text-slate-500 dark:text-slate-50 "
+                      className="text-xl font-semibold text-text_dark_primary dark:text-slate-50"
                     >
-                      Create chat
+                      Create Chat
                     </DialogTitle>
                     <div className="mt-2 flex items-center gap-2">
                       <Switch
@@ -208,7 +208,7 @@ export function AddChat({ open }) {
                                       ({ _id }) => user._id === _id
                                     ) ? (
                                       <button
-                                        className="px-2 py-1 text-xs dark:text-white text-black bg-primary rounded-md hover:bg-primary_hover"
+                                        className="px-3 py-1.5 text-xs dark:text-white text-white bg-primary rounded-lg hover:bg-primary_hover transition-colors duration-200 font-medium"
                                         onClick={() => {
                                           if (
                                             isGroupChat &&
@@ -274,14 +274,14 @@ export function AddChat({ open }) {
                 <div className="mt-5 flex items-center justify-end">
                   <button
                     type="button"
-                    className="rounded-md border border-transparent bg-backgroundDark2 px-4 py-2 text-base font-medium mx-2 text-white shadow-sm hover:bg-backgroundDark3"
+                    className="rounded-lg border border-border_light dark:border-border_dark bg-backgroundLight2 dark:bg-backgroundDark1 px-5 py-2.5 text-base font-medium mx-2 text-text_dark_primary dark:text-white hover:bg-backgroundLight3 dark:hover:bg-backgroundDark3 transition-all duration-200"
                     onClick={handleClose}
                   >
                     Cancel
                   </button>
                   <button
                     type="button"
-                    className="rounded-md border border-transparent bg-blue-600 px-4 py-2 text-base font-medium mx-2 text-white shadow-sm hover:bg-blue-700 "
+                    className="rounded-lg border border-transparent bg-primary px-5 py-2.5 text-base font-medium mx-2 text-white shadow-md hover:bg-primary_hover hover:shadow-lg transition-all duration-200"
                     onClick={
                       isGroupChat ? createNewGroupChat : createNewOneToOneChat
                     }

@@ -60,21 +60,20 @@ export default function RecentChatsSidebar() {
       }`}
     >
       <div className="top">
-        <h1 className="text-black font-medium text-xl dark:text-white">
-          Recent chats
+        <h1 className="text-black font-semibold text-xl dark:text-white">
+          Recent Chats
         </h1>
         <div
-          className="flex
-          items-center gap-1 bg-backgroundLight3 dark:bg-backgroundDark1 dark:text-slate-300 p-3 rounded-md my-5"
+          className="flex items-center gap-2 bg-backgroundLight3 dark:bg-backgroundDark1 dark:text-slate-300 px-4 py-3 rounded-lg my-5 border border-transparent focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all duration-200"
         >
-          <div className="text-xl">
+          <div className="text-xl text-muted">
             <BiSearch />
           </div>
           <input
             type="text"
             onChange={getFilteredRecentChats}
-            className="bg-transparent outline-none px-2 w-[90%]"
-            placeholder="Search for chats..."
+            className="bg-transparent outline-none px-2 w-[90%] placeholder:text-muted"
+            placeholder="Search chats..."
           />
         </div>
 
