@@ -162,44 +162,6 @@ npm start
 
 Access the app at: `http://localhost:5173`
 
-## 🌐 Deployment
-
-### Deploy to Vercel
-
-#### Backend Deployment
-1. Push your code to GitHub
-2. Go to [Vercel](https://vercel.com)
-3. Import your repository
-4. Set root directory to `backend`
-5. Add environment variables from `backend/.env`
-6. Deploy!
-
-#### Frontend Deployment
-1. Create new Vercel project
-2. Set root directory to `client`
-3. Add environment variables from `client/.env`
-4. Update `VITE_SERVER_URL` to your backend URL
-5. Deploy!
-
-#### Signaling Server Deployment
-**Option 1: Railway (Recommended)**
-1. Go to [Railway.app](https://railway.app)
-2. Create new project from GitHub
-3. Set root directory to `signaling-server`
-4. Deploy automatically
-5. Copy the public URL
-
-**Option 2: Render**
-1. Go to [Render.com](https://render.com)
-2. Create new Web Service
-3. Set root directory to `signaling-server`
-4. Build: `npm install`
-5. Start: `npm start`
-
-**Update Frontend `.env`:**
-```env
-VITE_SIGNALLING_SERVER_URL=https://your-signaling-server.com/
-```
 
 ## 📧 EmailJS Setup (Required for OTP)
 
